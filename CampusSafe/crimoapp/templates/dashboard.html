@@ -1,0 +1,672 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DashBoard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            /* background-image: url(heroo.png); */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Nav Bar */
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.7);
+            /* Darker transparent background */
+            backdrop-filter: blur(10px);
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 10px 20px;
+        }
+
+        nav .navbar {
+            width: 100%;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0;
+        }
+
+        nav li {
+            height: 35px;
+            margin: 0 10px;
+        }
+
+        nav a {
+            color: #fff;
+            font-size: 1.2rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #fff;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        nav li:first-child {
+            margin-right: auto;
+        }
+
+        /* Dropdown Styling */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            color: #fff;
+            font-size: 1.2rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+            border-radius: 5px;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: #fff;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            border-radius: 0;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 250px;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: -10px 0 10px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding-top: 20px;
+        }
+
+        .sidebar li {
+            width: 100%;
+        }
+
+        .sidebar a {
+            color: #fff;
+            font-size: 1.1rem;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Menu Button */
+        .menu-button {
+            display: none;
+        }
+
+        @media(max-width: 760px) {
+            .hideOnMobile {
+                display: none;
+            }
+
+            .menu-button {
+                display: block;
+            }
+        }
+
+        /* Responsive Sidebar on Mobile */
+        @media(max-width: 420px) {
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+
+        /* Dashboard Section */
+        #dashboard {
+            width: 100%;
+            padding: 50px 0;
+            background: #2a2a2a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            min-height: 100vh;
+        }
+
+        .dashboard-card {
+            width: 90%;
+            max-width: 1200px;
+            background: #3b3b3b;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .content {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Heading Style */
+        h1 {
+            font-family: 'Arial', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #e1e1e1;
+        }
+
+        /* Search Inputs */
+        .search-container {
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .search-input {
+            width: 40%;
+            min-width: 280px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            border: 1px solid #555;
+            font-size: 16px;
+            background: #2a2a2a;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Hover Effect on search input*/
+        .search-input:hover {
+            border-color: #888;
+            background-color: #333;
+            cursor: pointer;
+        }
+
+        /* Focus Effect */
+        .search-input:focus {
+            border-color: #777;
+            background-color: #444;
+        }
+
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: #3b3b3b;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            border: 1px solid #444;
+            text-align: center;
+            font-size: 14px;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .data-table th {
+            background: #2a2a2a;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        .table-row {
+            background: #3b3b3b;
+            transition: background 0.3s ease;
+        }
+
+        .table-row:hover {
+            background: #4a4a4a;
+        }
+
+        /* See More Button */
+        .button-container {
+            margin-top: 30px;
+        }
+
+        #seeMoreButton {
+            padding: 10px 20px;
+            background: #2a2a2a;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        #seeMoreButton:hover {
+            background: #3b3b3b;
+            border-color: #555;
+        }
+
+        #showLessButton {
+            padding: 10px 20px;
+            background: #2a2a2a;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        #showLessButton:hover {
+            background: #3b3b3b;
+            border-color: #555;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard-card {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .search-input {
+                width: 100%;
+                font-size: 14px;
+            }
+
+            .data-table th,
+            .data-table td {
+                font-size: 12px;
+                padding: 10px;
+            }
+        }
+
+        /* Footer Section */
+        #footer {
+            background-color: #1e1e1e;
+            color: #cfcfcf;
+            padding: 40px 0;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            padding: 0 20px;
+        }
+
+        .footer-container>div {
+            flex: 1;
+            margin: 20px;
+        }
+
+        .footer-about,
+        .footer-links,
+        .footer-contact {
+            max-width: 300px;
+        }
+
+        .footer-about h3,
+        .footer-links h3,
+        .footer-contact h3 {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .footer-about p,
+        .footer-contact p {
+            line-height: 1.6;
+            color: #cfcfcf;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links ul li a {
+            text-decoration: none;
+            color: #cfcfcf;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .footer-links ul li a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            margin-top: 20px;
+        }
+
+        .footer-bottom p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #999;
+        }
+
+        /* Footer Responsiveness */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-container>div {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- navbar -->
+    <nav>
+        <ul class="navbar">
+            <li class="logo"><a href="{% url 'home' %}">CrisisMonitor</a></li>
+            <li class="hideOnMobile"><a href="{% url 'home' %}">HOME</a></li>
+            <li class="hideOnMobile"><a href="{% url 'resources' %}">SAFETY RESOURCES</a></li>
+            <li class="hideOnMobile"><a href="{% url 'report' %}">REPORTS</a></li>
+            <li class="hideOnMobile"><a href="{% url 'dashboard' %}">DASHBOARD</a></li>
+            <li class="hideOnMobile"><a href="#footer">CONTACT US</a></li>
+            
+            <!-- Dynamic Login/Account Dropdown -->
+            {% if user.is_authenticated %}
+            <li class="hideOnMobile dropdown">
+                <a href="#" class="dropbtn">ACCOUNT</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'view_report_history' %}">View Report History</a>
+                    <a href="{% url 'logout' %}">Logout</a>
+                </div>
+            </li>
+            {% else %}
+            <li class="hideOnMobile"><a href="{% url 'login' %}">LOGIN</a></li>
+            {% endif %}
+            
+            <li class="menu-button" onclick="showSidebar()">
+                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px"
+                        fill="#fff">
+                        <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+                    </svg>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Sidebar -->
+        <ul class="sidebar">
+            <li onclick="hideSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26px"
+                        viewBox="0 -960 960 960" width="26px" fill="#fff">
+                        <path
+                            d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                    </svg></a></li>
+            <li><a href="{% url 'home' %}">HOME</a></li>
+            <li><a href="{% url 'resources' %}">SAFETY RESOURCES</a></li>
+            <li><a href="{% url 'report' %}">REPORTS</a></li>
+            <li><a href="{% url 'dashboard' %}">DASHBOARD</a></li>
+            <li><a href="#footer">CONTACT US</a></li>
+            
+            <!-- Dynamic Login/Account Option -->
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'view_report_history' %}">MY REPORT HISTORY</a></li>
+            <li><a href="{% url 'logout' %}">LOGOUT</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}">LOGIN</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- DASHBOARD -->
+
+    <section id="dashboard">
+        <div class="dashboard-card">
+            <main class="content">
+                <h1>Disaster Management Dashboard</h1>
+
+                <!-- Search Inputs -->
+                <div class="search-container">
+                    <input type="text" id="searchLocation" class="search-input" placeholder="Search by location..."
+                        onkeyup="filterTable()">
+                    <input type="text" id="searchDisasterType" class="search-input"
+                        placeholder="Search by disaster type..." onkeyup="filterTable()">
+                </div>
+
+                <!-- Data Table -->
+                <table class="data-table" id="disasterTable">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Location</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for report in disasters %}
+                        <tr class="table-row">
+                            <td>{{ report.description }}</td>
+                            <td>{{ report.location }}</td>
+                            <td>{{ report.time }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- See More and Show Less Buttons -->
+                <div class="button-container">
+                    <button id="seeMoreButton" onclick="toggleRows('show')">See More</button>
+                    <button id="showLessButton" style="display: none;" onclick="toggleRows('hide')">Show Less</button>
+                </div>
+
+            </main>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer id="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>About CrisisMonitor</h3>
+                <p>CrisisMonitor is a platform dedicated to providing real-time information and updates on disasters
+                    happening around the globe. Stay informed and stay safe with us.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{% url 'home' %}">HOME</a></li>
+                    <li><a href="{% url 'report' %}">REPORTS</a></li>
+                    <li><a href="{% url 'dashboard' %}">DASHBOARD</a></li>
+                    <li><a href="#footer">CONTACT US</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p>Email: crisismonitor@gmail.com</p>
+                <p>Phone: +91 9876543210</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 CrisisMonitor. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function showSidebar() {
+            const sidebar = document.querySelector('.sidebar')
+            sidebar.style.display = 'flex'
+        }
+        function hideSidebar() {
+            const sidebar = document.querySelector('.sidebar')
+            sidebar.style.display = 'none'
+        }
+        const rows = document.querySelectorAll('.table-row');
+        const seeMoreButton = document.getElementById('seeMoreButton');
+        const showLessButton = document.createElement('button'); // Create the "Show Less" button
+        let visibleRows = 5; // Number of rows to show by default
+
+        // Initialize the "Show Less" button
+        showLessButton.id = 'showLessButton';
+        showLessButton.innerText = 'Show Less';
+        showLessButton.style.display = 'none';
+        showLessButton.style.marginLeft = '10px'; // Add margin for spacing
+        showLessButton.onclick = showLess; // Attach the event handler
+        seeMoreButton.parentNode.appendChild(showLessButton); // Add to the button container
+
+        // Function to toggle "See More" functionality
+        function toggleRows() {
+            if (visibleRows < rows.length) {
+                visibleRows += 5; // Show 5 more rows
+                for (let i = 0; i < visibleRows && i < rows.length; i++) {
+                    rows[i].style.display = '';
+                }
+                if (visibleRows >= rows.length) {
+                    seeMoreButton.style.display = 'none'; // Hide the "See More" button when all rows are visible
+                }
+                showLessButton.style.display = 'inline-block'; // Show the "Show Less" button
+            }
+        }
+
+        // Function to toggle "Show Less" functionality
+        function showLess() {
+            visibleRows = 5; // Reset visible rows to 5
+            rows.forEach((row, index) => {
+                if (index >= visibleRows) {
+                    row.style.display = 'none';
+                }
+            });
+            seeMoreButton.style.display = 'inline-block'; // Show the "See More" button
+            showLessButton.style.display = 'none'; // Hide the "Show Less" button
+        }
+
+        // Initially hide rows beyond the first 5
+        rows.forEach((row, index) => {
+            if (index >= visibleRows) {
+                row.style.display = 'none';
+            }
+        });
+
+
+        // JavaScript to filter table based on search inputs
+        function filterTable() {
+            var inputLocation = document.getElementById('searchLocation').value.toUpperCase();
+            var inputDisasterType = document.getElementById('searchDisasterType').value.toUpperCase();
+            var table = document.getElementById('disasterTable');
+            var tr = table.getElementsByTagName('tr');
+
+            for (var i = 1; i < tr.length; i++) {
+                var tdLocation = tr[i].getElementsByTagName('td')[1]; // Location column (2nd)
+                var tdDisasterType = tr[i].getElementsByTagName('td')[0]; // Disaster Type column (1st)
+                if (tdLocation && tdDisasterType) {
+                    var locationText = tdLocation.textContent || tdLocation.innerText;
+                    var disasterTypeText = tdDisasterType.textContent || tdDisasterType.innerText;
+
+                    // Check if both the location and disaster type match the search criteria
+                    if (locationText.toUpperCase().indexOf(inputLocation) > -1 &&
+                        disasterTypeText.toUpperCase().indexOf(inputDisasterType) > -1) {
+                        tr[i].style.display = '';
+                    } else {
+                        tr[i].style.display = 'none';
+                    }
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>

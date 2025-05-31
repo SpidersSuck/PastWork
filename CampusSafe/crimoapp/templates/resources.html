@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Safe - Resources</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo a {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .menu-button {
+            display: none;
+            cursor: pointer;
+        }
+        
+        /* Dropdown Styling */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 5px;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: var(--dark-color) !important;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+            color: var(--secondary-color) !important;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background: var(--primary-color);
+            padding: 2rem;
+            transition: right 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .sidebar.active {
+            right: 0;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+            margin-top: 2rem;
+        }
+        
+        .sidebar li {
+            margin-bottom: 1.5rem;
+        }
+        
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 2.5rem;
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .resource-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .resource-card h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .resource-card p {
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+        
+        .contact-info {
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info i {
+            margin-right: 0.5rem;
+            color: var(--accent-color);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        .btn i {
+            margin-left: 0.3rem;
+        }
+        
+        .emergency-card {
+            background: #fff5f5;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .emergency-card h2 {
+            color: var(--accent-color);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .menu-button {
+                display: block;
+            }
+            
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'dashboard' %}">Campus Safe</a>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">HOME</a></li>
+            <li><a href="{% url 'resources' %}">SAFETY RESOURCES</a></li>
+            <li><a href="{% url 'report' %}">REPORTS</a></li>
+            <li><a href="{% url 'dashboard' %}">DASHBOARD</a></li>
+            <li><a href="#footer">CONTACT US</a></li>
+            
+            <!-- Dynamic Login/Account Dropdown -->
+            {% if user.is_authenticated %}
+            <li class="dropdown">
+                <a href="#" class="dropbtn">ACCOUNT</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'view_report_history' %}">View Report History</a>
+                    <a href="{% url 'logout' %}">Logout</a>
+                </div>
+            </li>
+            {% else %}
+            <li><a href="{% url 'login' %}">LOGIN</a></li>
+            {% endif %}
+        </ul>
+        
+        <div class="menu-button" onclick="showSidebar()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+    
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="close-btn" onclick="hideSidebar()">
+            <i class="fas fa-times"></i>
+        </div>
+        <ul>
+            <li><a href="{% url 'home' %}">HOME</a></li>
+            <li><a href="{% url 'resources' %}">SAFETY RESOURCES</a></li>
+            <li><a href="{% url 'report' %}">REPORTS</a></li>
+            <li><a href="{% url 'dashboard' %}">DASHBOARD</a></li>
+            <lil><a href="{% url 'incidentMap' %}">Campus Monitoring</a></lil>
+            <li><a href="#footer">CONTACT US</a></li>
+            
+            <!-- Dynamic Login/Account Option -->
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'view_report_history' %}">MY REPORT HISTORY</a></li>
+            <li><a href="{% url 'logout' %}">LOGOUT</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}">LOGIN</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    
+    <div class="container">
+        <h1>Safety Resources</h1>
+        
+        <div class="resources-grid">
+            <div class="resource-card emergency-card">
+                <h2>Emergency Services</h2>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> Dial <strong>911</strong> for immediate assistance</p>
+                </div>
+                <p>For life-threatening emergencies, crimes in progress, or situations requiring immediate police, fire, or medical response.</p>
+                <a href="tel:911" class="btn">Call Now <i class="fas fa-phone"></i></a>
+            </div>
+            
+            <div class="resource-card">
+                <h2>Campus Security</h2>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> <strong>509-335-8548</strong></p>
+                    <p><i class="fas fa-map-marker-alt"></i> Available 24/7 on campus</p>
+                </div>
+                <p>Non-emergency campus security services, safety escorts, and general assistance.</p>
+                <a href="https://police.wsu.edu/contact-us/" target="_blank" class="btn">Visit Website <i class="fas fa-external-link-alt"></i></a>
+            </div>
+            
+            <div class="resource-card">
+                <h2>Student Health Services</h2>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> <strong>509-335-3575</strong></p>
+                    <p><i class="fas fa-clock"></i> Mon-Fri: 8am-5pm</p>
+                </div>
+                <p>Medical care, health education, and wellness services for students.</p>
+                <a href="https://cougarhealth.wsu.edu/home/" target="_blank" class="btn">Visit Website <i class="fas fa-external-link-alt"></i></a>
+            </div>
+            
+            <div class="resource-card">
+                <h2>Counseling Services</h2>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> <strong>509-335-4511</strong></p>
+                    <p><i class="fas fa-clock"></i> Mon-Fri: 8am-5pm</p>
+                </div>
+                <p>Confidential mental health services and counseling for students.</p>
+                <a href="https://cougarhealth.wsu.edu/individual-counseling/" target="_blank" class="btn">Visit Website <i class="fas fa-external-link-alt"></i></a>
+            </div>
+            
+            <div class="resource-card">
+                <h2>Title IX Office</h2>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> <strong>509-335-8288</strong></p>
+                    <p><i class="fas fa-envelope"></i> titleix@wsu.edu</p>
+                </div>
+                <p>Resources and support for issues related to sexual harassment and gender discrimination.</p>
+                <a href="https://titleix.wsu.edu/" target="_blank" class="btn">Visit Website <i class="fas fa-external-link-alt"></i></a>
+            </div>
+            
+            <div class="resource-card">
+                <h2>Night Walk Service</h2>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> <strong>509-335-7233</strong></p>
+                    <p><i class="fas fa-clock"></i> Sun-Thu: 6pm-12am</p>
+                </div>
+                <p>Free safety escort service for students on campus during evening hours.</p>
+                <a href="tel:5093357233" class="btn">Call Now <i class="fas fa-phone"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <footer id="footer">
+        <p>© 2023 Campus Safe | Washington State University</p>
+        <p>Contact us: <a href="mailto:safety@wsu.edu" style="color: var(--secondary-color);">safety@wsu.edu</a></p>
+    </footer>
+    
+    <script>
+        function showSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.add('active');
+        }
+        
+        function hideSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.remove('active');
+        }
+        
+        // Close sidebar when clicking outside of it
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuButton = document.querySelector('.menu-button');
+            
+            if (!sidebar.contains(event.target) && event.target !== menuButton && !menuButton.contains(event.target)) {
+                hideSidebar();
+            }
+        });
+    </script>
+</body>
+</html>
