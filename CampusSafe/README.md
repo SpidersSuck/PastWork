@@ -9,3 +9,4 @@
 
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Django (Python)
+<img width="1709" height="918" alt="image" src="https://github.com/user-attachments/assets/3b32aa9c-537e-414f-bdac-e2a783fce6e5" />
